@@ -43,6 +43,11 @@ public class ChooseAreaActivity extends Activity {
     private ArrayAdapter<String> adapter;
     private CoolWeatherDB coolWeatherDB;
     private List<String> dataList = new ArrayList<String>();
+
+    /**
+     * 是否从WeatherActivity中跳转过来
+     */
+    private boolean isFromWeatherActvity;
     /**
      * 省列表
      */
@@ -73,9 +78,11 @@ public class ChooseAreaActivity extends Activity {
     @Override
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        isFromWeatherActvity = getIntent().getBooleanExtra("from_weather_activity",false);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getBoolean("city_selected",false)){
+        //已经选择城市且不从WeatherActivity跳转过来，才会直接跳转到WeatherActivity
+        if (prefs.getBoolean("selectedCity",false) && !isFromWeatherActvity){
             Intent intent = new Intent(this,WeatherActivity.class);
             startActivity(intent);
             finish();
@@ -105,6 +112,7 @@ public class ChooseAreaActivity extends Activity {
                     Log.d("tag","cncncncncncncncncncncncncncncncncncncncncncncncnncncncncncncncncncncncncn");
                     queryCounties();
                 }else if(currentLevel == LEVEL_COUNTY){
+
                     String countyCode = countyList.get(index).getCountyCode();
                     Intent intent = new Intent (ChooseAreaActivity.this,WeatherActivity.class);
                     intent.putExtra("county_code",countyCode);
@@ -183,7 +191,7 @@ private void queryProvinces(){
     private void queryFromServer(final String code,final String type){
         String address;
         if (!TextUtils.isEmpty(code)){
-            Log.d("tag",code);
+
             address = "http://www.weather.com.cn/data/list3/city" + code + ".xml";
             Log.d("tag","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         }else {
@@ -270,6 +278,10 @@ private void queryProvinces(){
         }else if (currentLevel == LEVEL_CITY){
             queryProvinces();
         }else {
+            if (isFromWeatherActvity){
+                Intent intent = new Intent(this,WeatherActivity.class);
+                startActivity(intent);
+            }
             finish();
         }
     }

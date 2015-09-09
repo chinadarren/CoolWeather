@@ -122,8 +122,10 @@ public class Utility {
                     County county = new County();
                     county.setCountyCode(array[0]);
                     county.setCountyName(array[1]);
-                    county.setId(cityId);
+                    county.setCityId(cityId);
+                  //  county.setId(cityId);
                     //将解析出来的数据存储到County表
+
                     coolWeatherDB.saveCounty(county);
                 }
                 return true;
