@@ -4,12 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.session.PlaybackState;
+import android.util.Log;
 
 import com.example.cl.coolweather.model.City;
 import com.example.cl.coolweather.model.County;
 import com.example.cl.coolweather.model.Province;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class CoolWeatherDB {
     /**
      * 数据库名
      */
-    public static final String DB_NAME = "cool_weather";
+    public static final String DB_NAME = "cool_weather.db";
 
     /**
      * 数据库版本
@@ -33,6 +32,7 @@ public class CoolWeatherDB {
      * 将构造方法私有化
      */
    private CoolWeatherDB(Context context){
+
        CoolWeatherOpenHelper dbHelper = new CoolWeatherOpenHelper(context,DB_NAME,null,VERSION);
        db = dbHelper.getWritableDatabase();
    }
@@ -41,6 +41,7 @@ public class CoolWeatherDB {
      */
     public synchronized static CoolWeatherDB getInstance(Context context){
         if(coolWeatherDB == null){
+
             coolWeatherDB = new CoolWeatherDB(context);
         }
         return coolWeatherDB;
@@ -49,7 +50,8 @@ public class CoolWeatherDB {
      * 将Province实例存储到数据库
      */
     public void saveProvince(Province province){
-    if (province != null){
+  //      Log.d("tag",province);
+        if (province != null){
         ContentValues values = new ContentValues();
         values.put("province_name",province.getProvinceName());
         values.put("province_code",province.getProvinceCode());
@@ -110,8 +112,8 @@ public class CoolWeatherDB {
     public void saveCounty(County county){
         if (county != null){
             ContentValues values = new ContentValues();
-            values.put("count_name",county.getCountyName());
-            values.put("count_code",county.getCountyCode());
+            values.put("county_name",county.getCountyName());
+            values.put("county_code",county.getCountyCode());
             db.insert("County",null,values);
         }
     }
@@ -119,10 +121,13 @@ public class CoolWeatherDB {
      * 从数据库读取某城市下所有的县信息
      */
     public List<County> loadCounties(int cityId){
+
         List<County> list = new ArrayList<County>();
         Cursor cursor = db.query("County",null,"city_id = ?",
                 new String[] {String.valueOf(cityId)},null,null,null);
+
         if (cursor.moveToFirst()){
+
             do {
                 County county = new County();
                 county.setId(cursor.getInt(cursor.getColumnIndex("id")));
