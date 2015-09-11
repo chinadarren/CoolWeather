@@ -28,6 +28,11 @@ import com.example.cl.coolweather.util.Utility;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * http://m.weather.com.cn/data/101190404.html
+ * 另一个天气预报的接口
+ */
+
 
 /**
  * Created by cl on 2015/9/1.

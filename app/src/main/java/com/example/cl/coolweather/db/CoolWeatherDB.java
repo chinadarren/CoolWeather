@@ -39,6 +39,7 @@ public class CoolWeatherDB {
     /**
      * 获取CoolWeatherDB实例
      */
+    //synchronized 线程锁，保证全局范围内只会有一个 CoolWeatherDB的实例
     public synchronized static CoolWeatherDB getInstance(Context context){
         if(coolWeatherDB == null){
 
@@ -50,7 +51,6 @@ public class CoolWeatherDB {
      * 将Province实例存储到数据库
      */
     public void saveProvince(Province province){
-  //      Log.d("tag",province);
         if (province != null){
         ContentValues values = new ContentValues();
         values.put("province_name",province.getProvinceName());
@@ -91,8 +91,6 @@ public class CoolWeatherDB {
      * 从数据库读取某省下所有的城市信息
      */
    public List<City> loadCities(int provinceId){
-//       Log.d("tag","qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
-//       Log.d("tag", String.valueOf(provinceId));
        List<City> list = new ArrayList<City>();
        Cursor cursor = db.query("City",null,"province_id = ?",
                new String[]{String.valueOf(provinceId)},null,null,null);
@@ -124,8 +122,6 @@ public class CoolWeatherDB {
      * 从数据库读取某城市下所有的县信息
      */
     public List<County> loadCounties(int cityId){
-        Log.d("tag","qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
-        Log.d("tag", String.valueOf(cityId));
         List<County> list = new ArrayList<County>();
         Cursor cursor = db.query("County",null,"city_id = ?",
                 new String[] {String.valueOf(cityId)},null,null,null);

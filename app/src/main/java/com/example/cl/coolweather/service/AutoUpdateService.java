@@ -16,7 +16,7 @@ import com.example.cl.coolweather.util.Utility;
 /**
  * Created by cl on 2015/9/9.
  */
-public class AutoUpadateService extends Service {
+public class AutoUpdateService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -48,7 +48,7 @@ public class AutoUpadateService extends Service {
         HttpUtil.sendHttpRequest(address, new HttpUtil.HttpCallbackListener() {
             @Override
             public void onFinish(String response) {
-                Utility.handleWeatherResponse(AutoUpadateService.this,response);
+                Utility.handleWeatherResponse(AutoUpdateService.this,response);
             }
 
             @Override
